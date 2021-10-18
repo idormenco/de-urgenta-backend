@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DeUrgenta.Domain.Migrations
 {
     [DbContext(typeof(DeUrgentaContext))]
-    [Migration("20211015114916_AddBackpackItemConcurrencyToken")]
+    [Migration("20211018105919_AddBackpackItemConcurrencyToken")]
     partial class AddBackpackItemConcurrencyToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,10 +64,11 @@ namespace DeUrgenta.Domain.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
-                    b.Property<decimal>("Version")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric(20,0)")
-                        .HasDefaultValue(0m);
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id")
                         .HasName("PK_BackpackItem");

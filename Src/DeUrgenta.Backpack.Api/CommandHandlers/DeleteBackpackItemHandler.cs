@@ -22,15 +22,22 @@ namespace DeUrgenta.Backpack.Api.CommandHandlers
 
         public async Task<Result<Unit, ValidationResult>> Handle(DeleteBackpackItem request, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.IsValidAsync(request);
-            if (validationResult.IsFailure)
+            try
             {
-                return validationResult;
-            }
+                var validationResult = await _validator.IsValidAsync(request);
+                if (validationResult.IsFailure)
+                {
+                    return validationResult;
+                }
 
-            var backpackItem = await _context.BackpackItems.FirstAsync(x => x.Id == request.ItemId, cancellationToken);
-            _context.BackpackItems.Remove(backpackItem);
-            await _context.SaveChangesAsync(cancellationToken);
+                var backpackItem = await _context.BackpackItems.FirstAsync(x => x.Id == request.ItemId, cancellationToken);
+                _context.BackpackItems.Remove(backpackItem);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return ValidationResult.ConcurrencyUpdateValidationError;
+            }
 
             return Unit.Value;
         }

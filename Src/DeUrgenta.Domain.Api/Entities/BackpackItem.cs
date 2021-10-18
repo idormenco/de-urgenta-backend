@@ -13,6 +13,8 @@ namespace DeUrgenta.Domain.Api.Entities
         public BackpackCategoryType BackpackCategory { get; set; }
         public virtual Backpack Backpack { get; set; }
         public virtual Guid BackpackId { get; set; }
-        public ulong Version { get; set; }
+        
+        [ConcurrencyCheck]
+        public uint Version { get; set; }
     }
 }

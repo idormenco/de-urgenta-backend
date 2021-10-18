@@ -40,8 +40,10 @@ namespace DeUrgenta.Domain.Api.Configurations
 
             builder
                 .Property(e => e.Version)
-                .IsRequired()
-                .HasDefaultValue(0);
+                .HasColumnName("xmin")
+                .HasColumnType("xid")
+                .ValueGeneratedOnAddOrUpdate()
+                .IsConcurrencyToken();
         }
     }
 }

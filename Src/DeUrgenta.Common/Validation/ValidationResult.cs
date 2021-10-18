@@ -17,5 +17,6 @@ namespace DeUrgenta.Common.Validation
 
         public static ValidationResult Ok { get; } = new ValidationPassed();
         public static ValidationResult GenericValidationError { get; } = new GenericValidationError();
+        public static ValidationResult ConcurrencyUpdateValidationError { get; } = new ConcurrencyUpdateValidationError();
     }
 }

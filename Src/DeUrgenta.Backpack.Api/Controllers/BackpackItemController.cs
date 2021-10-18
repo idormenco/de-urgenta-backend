@@ -102,11 +102,13 @@ namespace DeUrgenta.Backpack.Api.Controllers
 
         [SwaggerResponse(StatusCodes.Status200OK, "Updated backpack item", typeof(BackpackItemModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "A business rule was violated", typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status409Conflict, "add description", typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Something bad happened", typeof(ProblemDetails))]
 
         [SwaggerRequestExample(typeof(BackpackItemRequest), typeof(UpdateBackpackItemRequestExample))]
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(UpdateBackpackItemResponseExample))]
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BusinessRuleViolationResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(object))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ApplicationErrorResponseExample))]
         public async Task<ActionResult<BackpackItemModel>> UpdateBackpackItemAsync([FromRoute] Guid itemId, [FromBody] BackpackItemRequest backpackItem)
         {
@@ -126,9 +128,11 @@ namespace DeUrgenta.Backpack.Api.Controllers
 
         [SwaggerResponse(StatusCodes.Status204NoContent, "Backpack item was deleted")]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "A business rule was violated", typeof(ProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status409Conflict, "add description", typeof(ProblemDetails))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Something bad happened", typeof(ProblemDetails))]
 
         [SwaggerResponseExample(StatusCodes.Status400BadRequest, typeof(BusinessRuleViolationResponseExample))]
+        [SwaggerResponseExample(StatusCodes.Status409Conflict, typeof(object))]
         [SwaggerResponseExample(StatusCodes.Status500InternalServerError, typeof(ApplicationErrorResponseExample))]
         public async Task<IActionResult> DeleteBackpackItemAsync([FromRoute] Guid itemId)
         {

@@ -35,11 +35,6 @@ namespace DeUrgenta.Backpack.Api.Validators
                 return ValidationResult.GenericValidationError;
             }
 
-            if (!request.BackpackItem.Version.Equals(backpackItem.Version))
-            {
-                return ValidationResult.GenericValidationError;
-            }
-            
             return ValidationResult.Ok;
         }
     }

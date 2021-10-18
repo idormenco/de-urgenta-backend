@@ -26,6 +26,9 @@ namespace DeUrgenta.Common.Extensions
                 case GenericValidationError _:
                     return new BadRequestResult();
 
+                case ConcurrencyUpdateValidationError _:
+                    return new ConflictResult();
+
                 case DetailedValidationError error:
                     var problemDetails = error.ToValidationProblemDetails();
 

@@ -9,7 +9,7 @@ namespace DeUrgenta.Tests.Helpers.Builders
         private DateTime? _expirationDate = null;
         private Backpack _backpack = new BackpackBuilder().Build();
         private BackpackCategoryType _category = BackpackCategoryType.FirstAid;
-        private ulong _version;
+        private uint _version;
         
         public BackpackItem Build() => new()
         {
@@ -47,7 +47,7 @@ namespace DeUrgenta.Tests.Helpers.Builders
             return this;
         }
 
-        public BackpackItemBuilder WithVersion(ulong version)
+        public BackpackItemBuilder WithVersion(uint version)
         {
             _version = version;
             return this;

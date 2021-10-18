@@ -6,18 +6,19 @@ namespace DeUrgenta.Domain.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<decimal>(
-                name: "Version",
+            migrationBuilder.AddColumn<uint>(
+                name: "xmin",
                 table: "BackpackItems",
-                type: "numeric(20,0)",
+                type: "xid",
+                rowVersion: true,
                 nullable: false,
-                defaultValue: 0m);
+                defaultValue: 0u);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Version",
+                name: "xmin",
                 table: "BackpackItems");
         }
     }

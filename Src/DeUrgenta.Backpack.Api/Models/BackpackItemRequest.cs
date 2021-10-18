@@ -13,6 +13,6 @@ namespace DeUrgenta.Backpack.Api.Models
 
         public BackpackCategoryType CategoryType { get; init; }
         
-        public ulong Version { get; init; }
+        public uint Version { get; init; }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeUrgenta.Api.Extensions
 {
@@ -25,6 +26,8 @@ namespace DeUrgenta.Api.Extensions
 
                 // This will map HttpRequestException to the 503 Service Unavailable status code.
                 options.MapToStatusCode<HttpRequestException>(StatusCodes.Status503ServiceUnavailable);
+
+                options.MapToStatusCode<DbUpdateConcurrencyException>(StatusCodes.Status409Conflict);
 
                 // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
                 // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.

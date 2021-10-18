@@ -23,29 +23,40 @@ namespace DeUrgenta.Backpack.Api.CommandHandlers
 
         public async Task<Result<BackpackItemModel, ValidationResult>> Handle(UpdateBackpackItem request, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.IsValidAsync(request);
-            if (validationResult.IsFailure)
+            try
             {
-                return validationResult;
+                var validationResult = await _validator.IsValidAsync(request);
+                if (validationResult.IsFailure)
+                {
+                    return validationResult;
+                }
+
+                var backpackItem = await _context.BackpackItems.FirstAsync(x => x.Id == request.ItemId, cancellationToken);
+
+                backpackItem.Name = request.BackpackItem.Name;
+                backpackItem.BackpackCategory = request.BackpackItem.CategoryType;
+                backpackItem.Amount = request.BackpackItem.Amount;
+                backpackItem.ExpirationDate = request.BackpackItem.ExpirationDate;
+                backpackItem.Version = request.BackpackItem.Version;
+
+                _context.Entry(backpackItem).OriginalValues["Version"] = request.BackpackItem.Version;
+
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return new BackpackItemModel
+                {
+                    Id = backpackItem.Id,
+                    Name = backpackItem.Name,
+                    Amount = backpackItem.Amount,
+                    CategoryType = backpackItem.BackpackCategory,
+                    ExpirationDate = backpackItem.ExpirationDate,
+                    Version = backpackItem.Version
+                };
             }
-            var backpackItem = await _context.BackpackItems.FirstAsync(x => x.Id == request.ItemId, cancellationToken);
-            backpackItem.Name = request.BackpackItem.Name;
-            backpackItem.BackpackCategory = request.BackpackItem.CategoryType;
-            backpackItem.Amount = request.BackpackItem.Amount;
-            backpackItem.ExpirationDate = request.BackpackItem.ExpirationDate;
-            backpackItem.Version += 1;
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return new BackpackItemModel
+            catch (DbUpdateConcurrencyException)
             {
-                Id = backpackItem.Id,
-                Name = backpackItem.Name,
-                Amount = backpackItem.Amount,
-                CategoryType = backpackItem.BackpackCategory,
-                ExpirationDate = backpackItem.ExpirationDate,
-                Version = backpackItem.Version
-            };
+                return ValidationResult.ConcurrencyUpdateValidationError;
+            }
         }
     }
 }
